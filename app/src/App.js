@@ -1,36 +1,44 @@
-const express = require('express');
+import React from 'react';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-const app = express();
+import CreateUser from "./components/create-user.component";
+import Users from "./components/users.component";
 
-app.use(express.json()) // for parsing application/json
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+function App() {
+  return (<Router>
+    <div className="App">
+      <header>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+          <Link className="navbar-brand">React Axios Tutorial</Link>
 
-app.get('/courses', (req, res) => {
-    res.status(200).json({ name: 'api testing' });
-});
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item active">
+                <Link className="nav-link" to={"/create-user"}>Create User</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to={"/users"}>Users List</Link>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
 
-app.get('/course', (req, res) => {
-    let name = req.query.name;
-    res.json({ id: '1', name: name });
-});
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <Switch>
+              <Route exact path='/' component={Users} />
+              <Route path="/create-user" component={CreateUser} />
+              <Route path="/users" component={Users} />
+            </Switch>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Router>
+  );
+}
 
-app.get('/course/:id', (req, res) => {
-    let id = req.params.id;
-    let name;
-    if (id === '1') {
-        name = 'mocha';
-    };
-    res.json({ id: id, name: name });
-});
-
-app.post('/course', (req, res) => {
-    let name = req.body.name;
-    res.json({ id: '2', name: name });
-});
-
-app.post('/course', (req, res) => {
-    let name = req.body.name;
-    res.json({ id: '2', name: name });
-});
-
-module.exports = app;
+export default App;
